@@ -1,0 +1,34 @@
+<!-- hw3_form1.html -->
+
+
+<html>
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <title>アンケート1ページ目</title>
+
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="page-header">
+        <h1>問１）興味のある研究分野は？</h1>
+      </div>
+
+      <form action="hw3_form2.php" method="post">
+        <div class="form-group lead">
+          <input type="checkbox" name="form1[]" value="教育" class="checkbox-inline"> 教育
+          <input type="checkbox" name="form1[]" value="農業" class="checkbox-inline"> 農業
+          <input type="checkbox" name="form1[]" value="観光" class="checkbox-inline"> 観光
+          <input type="checkbox" name="form1[]" value="ＬＳ" class="checkbox-inline"> ＬＳ
+          <input type="checkbox" name="form1[]" value="地域" class="checkbox-inline"> 地域
+        </div>
+        <input type="submit" class="btn-primary">
+      </form>
+    </div>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+  </body>
+</html>
