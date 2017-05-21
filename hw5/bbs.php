@@ -25,17 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   }
 }
 
-//フォームの値を受け取りmysqlを更新する
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  if (!empty($_POST['comment'])) {   //commentの値が空値でない時
-    $update = $mysqli->query("UPDATE `messages` SET `body`='{$_POST['comment']}' WHERE id= '{$_POST['id']}'");
-    if (!$update) {   //queryエラーの場合，エラーを表示する
-      printf("Query failed: %s\n", $mysqli->error);
-      exit();
-    }
-  }
-}
-
 //データベースの読み込み　id降順
 $result = $mysqli->query('SELECT * FROM messages ORDER BY id DESC');
 if (!$result) {    //queryエラーの場合，エラーを表示する

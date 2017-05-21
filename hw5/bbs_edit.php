@@ -17,11 +17,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $query = "SELECT `password` FROM `messages` WHERE id = {$_POST['id']}";
   $bbs_pass = $mysqli->query($query)->fetch_row();
   if (strcmp($bbs_pass[0], $_POST['password']) !== 0) {   //formのpassとdbのpassの比較
-    print
-    '<script>
-        alert("パスワードが違います");
-        location.href = "./bbs.php";
-      </script>';
+    print '<script>
+            alert("パスワードが違います");
+            location.href = "./bbs.php";
+          </script>';
     exit();
   }
 }
@@ -47,6 +46,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!$result) {   //queryエラーの場合，エラーを表示する
       printf("Query failed: %s\n", $mysqli->error);
       exit();
+    }
+  }
+}
+
+//フォームの値を受け取りmysqlを更新する
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  if (!empty($_POST['comment'])) {   //commentの値が空値でない時
+    $update = $mysqli->query("UPDATE `messages` SET `body`='{$_POST['comment']}' WHERE id= '{$_POST['id']}'");
+    if (!$update) {   //queryエラーの場合，エラーを表示する
+      printf("Query failed: %s\n", $mysqli->error);
+      exit();
+    } else {
+      print '<script>
+              alert("更新しました．");
+              location.href = "./bbs.php";
+            </script>';
     }
   }
 }
@@ -79,12 +94,13 @@ $mysqli->close();
         </thead>
 
         <?php foreach ($result as $row):  //テーブルの内容を表示する?>
-          <form name="edit" action="bbs.php" method="post">
+          <form name="edit" action="" method="post">
             <tbody>
               <tr>
                 <td><?= $row['name'] ?></td>
                 <td><input type="text" name="comment" class="form-control" value="<?= $row['body'] ?>"></td>
                 <td>
+                  <input type="hidden" name="password" value="<?= $row['password'] ?>">
                   <input type="hidden" name="id" value="<?= $row['id'] ?>">
                   <input type="submit" value="更新" class="btn btn-danger" onclick="check()">
                 </td>
