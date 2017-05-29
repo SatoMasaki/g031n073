@@ -14,7 +14,7 @@ if ($mysqli->connect_errno) {
 
 //新規スレッドの作成
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  if (!empty($_POST['name']) && !empty($_POST['password'])) {    //nameと,comment,passwordの値が空値でない場合
+  if (!empty($_POST['name']) && !empty($_POST['password'])) {    //nameと,passwordの値が空値でない場合
     //SQLインジェクション処理
     $name = $mysqli->real_escape_string($_POST['name']);
     $password = $mysqli->real_escape_string($_POST['password']);

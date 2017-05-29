@@ -15,20 +15,22 @@ if ($mysqli->connect_errno) {
 // 削除ボタンが押された時
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if (isset($_POST['bbs_del'])) {
-    //passwordとidが一致の場合delete
-    $delete = $mysqli->query("DELETE FROM `messages` WHERE id = {$_POST['id']} AND password = '{$_POST['password']}'");
-    $delete_count = $mysqli->affected_rows;   //deleteの件数を取得
-    if ($delete_count == 1) {   //削除件数が１件の時
-      header("location: ./messages.php?id={$_POST['thread_id']}");
-      exit();
-    } elseif ($delete_count == 0) {   //パスワードが違う時エラーとを表示
-      print '<script>
-      alert("パスワードが違います");
-      history.back(-1);
-      </script>';
-    } else {    //それ以外の場合のエラー処理
-      printf("Connect failed: %s\n", $mysqli->connect_errno);
-      exit();
+    if (!empty($_POST['password'])) { //passwordが空でない時
+      //passwordとidが一致の場合delete
+      $delete = $mysqli->query("DELETE FROM `messages` WHERE id = {$_POST['id']} AND password = '{$_POST['password']}'");
+      $delete_count = $mysqli->affected_rows;   //deleteの件数を取得
+      if ($delete_count == 1) {   //削除件数が１件の時
+        header("location: ./messages.php?id={$_POST['thread_id']}");
+        exit();
+      } elseif ($delete_count == 0) {   //パスワードが違う時エラーとを表示
+        print '<script>
+        alert("パスワードが違います");
+        history.back(-1);
+        </script>';
+      } else {    //それ以外の場合のエラー処理
+        printf("Connect failed: %s\n", $mysqli->connect_errno);
+        exit();
+      }
     }
   }
 }
@@ -36,17 +38,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 //　更新ボタンが押された時　更新するコメントのレコードを読み込む
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if (isset($_POST['bbs_ope'])) {
-    //passwordが一致した時レコードの読み込み
-    $result = $mysqli->query("SELECT * FROM messages WHERE id = {$_POST['id']} AND password = '{$_POST['password']}'");
-    $result_count = $mysqli->affected_rows;   //selectの件数を取得
-    if ($result_count == 0) {   //パスワードが違う時エラーとを表示
-      print '<script>
-      alert("パスワードが違います");
-      history.back(-1);
-      </script>';
-    } elseif ($result_count == -1) {    //それ以外のエラー処理
-      printf("Query failed: %s\n", $mysqli->error);
-      exit();
+    if (!empty($_POST['password'])) { //passwordが空でない時
+      //passwordが一致した時レコードの読み込み
+      $result = $mysqli->query("SELECT * FROM messages WHERE id = {$_POST['id']} AND password = '{$_POST['password']}'");
+      $result_count = $mysqli->affected_rows;   //selectの件数を取得
+      if ($result_count == 0) {   //パスワードが違う時エラーとを表示
+        print '<script>
+        alert("パスワードが違います");
+        history.back(-1);
+        </script>';
+      } elseif ($result_count == -1) {    //それ以外のエラー処理
+        printf("Query failed: %s\n", $mysqli->error);
+        exit();
+      }
     }
   }
 }
@@ -54,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 //フォームの値を受け取りmysqlを更新する
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  if (!empty($_POST['comment'])) {   //commentの値が空値でない時
+  if (!empty($_POST['comment']) && !empty($_POST['password'])) {   //commentの値が空値でない時
     //SQLインジェクション処理
     $comment = $mysqli->real_escape_string($_POST['comment']);
     $id = $mysqli->real_escape_string($_POST['id']);
