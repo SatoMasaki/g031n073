@@ -112,7 +112,7 @@ $mysqli->close();
             $thread_id = htmlspecialchars($row['thread_id']);
           ?>
           <!-- コメントの削除・編集form -->
-          <form action="./edit.php" method="post">
+          <form action="./edit.php" method="post" name="bbs">
             <tr>
               <td><?= $name ?></td>
               <td><?= $body ?></td>
