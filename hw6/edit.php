@@ -15,8 +15,10 @@ if ($mysqli->connect_errno) {
 // 削除ボタンが押された時
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if (isset($_POST['bbs_del'])) {
+    // SQLインジェクション処理
+    $password = $mysqli->real_escape_string($_POST['password']);
     //passwordとidが一致の場合delete
-    $delete = $mysqli->query("DELETE FROM `messages` WHERE id = {$_POST['id']} AND password = '{$_POST['password']}'");
+    $delete = $mysqli->query("DELETE FROM `messages` WHERE id = {$_POST['id']} AND password = '{$password}'");
     $delete_count = $mysqli->affected_rows;   //deleteの件数を取得
     if ($delete_count == 1) {   //削除件数が１件の時
       header("location: ./messages.php?id={$_POST['thread_id']}");
@@ -36,8 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 //　更新ボタンが押された時　更新するコメントのレコードを読み込む
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if (isset($_POST['bbs_ope'])) {
+    // SQLインジェクション処理
+    $password = $mysqli->real_escape_string($_POST['password']);
     //passwordが一致した時レコードの読み込み
-    $result = $mysqli->query("SELECT * FROM messages WHERE id = {$_POST['id']} AND password = '{$_POST['password']}'");
+    $result = $mysqli->query("SELECT * FROM messages WHERE id = {$_POST['id']} AND password = '{$password}'");
     $result_count = $mysqli->affected_rows;   //selectの件数を取得
     if ($result_count == 0) {   //パスワードが違う時エラーとを表示
       print '<script>

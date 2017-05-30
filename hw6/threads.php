@@ -30,8 +30,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 // スレッドの削除
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-  if (isset($_POST['delete'])) {    //passwordとidが一致の場合delete
-    $delete = $mysqli->query("DELETE threads, messages from threads INNER JOIN messages ON threads.id = messages.thread_id where threads.id = {$_POST['id']} AND threads.password = '{$_POST['password']}'");
+  if (isset($_POST['delete'])) {
+    // SQLインジェクション処理
+    $password = $mysqli->real_escape_string($_POST['password']);
+    //passwordとidが一致の場合delete
+    $delete = $mysqli->query("DELETE threads, messages from threads INNER JOIN messages ON threads.id = messages.thread_id where threads.id = {$_POST['id']} AND threads.password = '{$password}'");
     $delete_count = $mysqli->affected_rows;   //deleteの件数を取得
     if ($delete_count >= 1) {   //削除ができた場合
       print '<script>
